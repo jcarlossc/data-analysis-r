@@ -67,4 +67,42 @@ glimpse(viagens)
 
 # ------------------------------------------------------------------
 
+# TRANSFORMAÇÃO DOS DADOS OBTIDOS.
+
+# A transformação de dados é o processo de converter dados brutos de 
+# um formato ou estrutura para outro, tornando-os mais úteis para 
+# análise e tomada de decisão. Isso envolve limpar, estruturar, 
+# organizar e alterar os dados para garantir que sejam consistentes, 
+# confiáveis e compatíveis com os sistemas de destino.
+
+# Normalmente as colunas podem vir com os tipos de dados "trocados",
+# ou seja, datas, horas, quantidades são criados como texto(string),
+# como é mostrado ao executar a função glimpse(),
+# por isso é necessário transformá-los para seus tipos naturais:
+# datas para DATE, horas para TIME e quantidades para INTEIROS e assim
+# por diante.
+
+#Convertendo o tipo do dato para tipo DATE.
+# Para mais informações sobre a função as.Date(), retire o cerquilha e
+# execute o comando:
+# ?as.Date
+
+# Cria-se uma nova coluna data.inicio com o tipo DATE.
+viagens$data.inicio <- as.Date(viagens$Período...Data.de.início, "%d/%m/%Y")
+
+# Ao execultar a função glimpse(), percebe-se que agora o tipo é DATE. 
+glimpse(viagens)
+
+#Formatando a data de inicio - para utilizar apenas Ano/Mês
+# Para mais informações sobre a função format(), retire o cerquilha e
+# execute o comando:
+# ?format()
+viagens$data.inicio.formatada <- format(viagens$data.inicio, "%Y-%m")
+
+# Ao execultar a função glimpse(), percebe-se que o formato da coluna
+# data.inicio mudou para Ano/Mês. 
+glimpse(viagens)
+
+# ------------------------------------------------------------------
+
 
