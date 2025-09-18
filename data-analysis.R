@@ -46,4 +46,25 @@ head(viagens)
 # Exibe dados em um formato de tabela semelhante a uma planilha.
 View(viagens)
 
-# -----------------------------------------------------------------------
+# Verificar dimensões do dataset - quantidades de linhas e colunas.
+dim(viagens)
+
+# Resumo do dataset - valores min, max, media, mediana...
+summary(viagens)
+
+# Resumo de uma coluna especifica
+summary(viagens$Valor.passagens)
+
+# Verificar tipo dos dados
+
+# Instalar a biblioteca dplyr - instalar no console.
+# install.packages("dplyr")
+# A função library() invoca a biblioteca 
+library(dplyr)
+
+# Afunção glimpse() apresenta os tipos de dados das colunas.
+glimpse(viagens)
+
+# ------------------------------------------------------------------
+
+
