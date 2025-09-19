@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+.RDataTmp
+.Rproj.user/
 
 # Arquivos de projeto do RStudio
 .Rproj.user/
