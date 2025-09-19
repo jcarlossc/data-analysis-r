@@ -105,4 +105,64 @@ glimpse(viagens)
 
 # ------------------------------------------------------------------
 
+# EXPLORAÇÃO DOS DADOS.
+
+# A exploração de dados geralmente envolve a visualização de 
+# dados para ajudá-lo a compreender a estrutura do conjunto 
+# de dados, a presença de valores discrepantes e a distribuição 
+# dos valores dos dados.
+
+# Gerando histograma da coluna passagens.
+hist(viagens$Valor.passagens)
+
+# Outro exemplo de histograma - filtrando valores
+# Para esse exemplo serão utilizadas as funções filter e select
+# ?dplyr::filter
+# ?dplyr::select
+
+#Filtrando os valores das passagens - apenas passagens entre 200 e 5000.
+passagens_fitro <- viagens %>%
+  select(Valor.passagens) %>%
+  filter(Valor.passagens >= 200 & Valor.passagens <= 5000)
+
+# Usando a variável criada.
+hist(passagens_fitro$Valor.passagens)
+
+# Verificando os valores min, max, média... da coluna valor
+summary(viagens$Valor.passagens)
+
+# Visualizando os valores em um boxplot.
+boxplot(viagens$Valor.passagens)
+
+# Visualizando os valores das passagens - filtro de 200 a 5000.
+boxplot(passagens_fitro$Valor.passagens)
+
+# Calculando o desvio padrão.
+sd(viagens$Valor.passagens)
+
+# Verificar se existem valores não preenchidos nas colunas do dataframe.
+# A função is.na() verifica a existência de valos vazios.
+# A função colSums() calcula a soma dos valores em cada coluna de uma 
+# matriz ou dataframe.
+# Ao combinar is.na() com colSums(), é possível contar a quantidade de 
+# valores NA em cada coluna de um dataframe.
+# ?is.na
+# ?colSums
+
+colSums(is.na(viagens))
+
+# Converter para factor.
+viagens$Situação <- factor(viagens$Situação)
+
+# Verifcar a quantidade de categorias da coluna Situação.
+str(viagens$Situação)
+
+# Verificar quantidade de registros em cada categoria.
+table(viagens$Situação)
+
+# Obtendo os valores em percentual de cada categoria.
+prop.table(table(viagens$Situação)) * 100
+
+# ------------------------------------------------------------------
+
 
