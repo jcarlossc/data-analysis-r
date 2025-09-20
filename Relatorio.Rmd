@@ -1,0 +1,118 @@
+---
+title: "Analisando Dados Abertos de Viagens a Serviço"
+author: "Carlos da Costa"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+---
+
+# INTRODUÇÃO
+
+O presente relatório tem como objetivo analisar os **gastos públicos com viagens a serviço** no ano de 2019, utilizando dados abertos disponibilizados pelo Portal da Transparência.  
+A proposta é identificar padrões e oportunidades de **redução de custos**, contribuindo para uma gestão mais eficiente dos recursos públicos.
+
+---
+
+# Definição do Problema
+
+A questão central é compreender **como os recursos foram utilizados nas viagens a serviço**, respondendo às seguintes perguntas:
+
+1. Qual é o valor gasto por órgão?  
+2. Qual é o valor gasto por cidade?  
+3. Qual é a quantidade de viagens realizadas por mês?
+
+---
+
+# Metodologia
+
+Os dados foram obtidos no [Portal da Transparência](https://portaldatransparencia.gov.br/download-de-dados/viagens), no arquivo **2019_Viagem.csv**.  
+As etapas do tratamento incluíram:
+
+- Carregamento dos dados via `read.csv()`.
+- Conversão de variáveis de texto para tipos adequados (datas e fatores).
+- Criação de colunas derivadas, como **Ano/Mês de início da viagem**.
+- Filtragem de valores inconsistentes (ex.: passagens fora da faixa de R$200 a R$5.000).
+
+Exemplo de leitura:
+
+```{r}
+viagens <- read.csv("file/2019_Viagem.csv", 
+                    sep = ";", 
+                    dec = ",", 
+                    fileEncoding = "Latin1")
+
+viagens$data.inicio <- as.Date(viagens$Período...Data.de.início, "%d/%m/%Y")
+viagens$data.inicio.formatada <- format(viagens$data.inicio, "%Y-%m")
+
+```
+
+# RESULTADOS
+
+## 1. Valor gasto por órgão
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+p1 <- viagens %>%
+  group_by(Nome.do.órgão.superior) %>%
+  summarise(valor = sum(Valor.passagens, na.rm = TRUE)) %>%
+  arrange(desc(valor)) %>%
+  top_n(15)
+
+ggplot(p1, aes(x = reorder(Nome.do.órgão.superior, valor), y = valor)) +
+  geom_bar(stat = "identity", fill = "#0073C2FF") +
+  coord_flip() +
+  labs(x = "Órgão", y = "Valor gasto (R$)", title = "Top 15 órgãos com maiores gastos")
+```
+
+## 2. Valor gasto por cidade
+
+```{r}
+p2 <- viagens %>%
+  group_by(Destinos) %>%
+  summarise(valor = sum(Valor.passagens, na.rm = TRUE)) %>%
+  arrange(desc(valor)) %>%
+  top_n(15)
+
+ggplot(p2, aes(x = reorder(Destinos, valor), y = valor)) +
+  geom_bar(stat = "identity", fill = "#0ba791") +
+  geom_text(aes(label = round(valor/1e6, 1)), vjust = 0.3, size = 3) +
+  coord_flip() +
+  labs(x = "Cidade", y = "Valor gasto (R$)", title = "Top 15 cidades destino")
+```
+
+## 3. Quantidade de viagens por mês
+
+```{r}
+p3 <- viagens %>%
+  group_by(data.inicio.formatada) %>%
+  summarise(qtd = n_distinct(Identificador.do.processo.de.viagem))
+
+ggplot(p3, aes(x = data.inicio.formatada, y = qtd, group = 1)) +
+  geom_line(color = "#E64B35FF") +
+  geom_point() +
+  labs(x = "Ano/Mês", y = "Quantidade de viagens", title = "Número de viagens por mês em 2019")
+```
+# DISCUSSÂO
+
+* Observa-se forte concentração de gastos em poucos órgãos e cidades, sugerindo potenciais áreas para renegociação de contratos ou políticas de otimização.
+
+* Algumas cidades aparecem com valores atípicos em relação à média, o que pode indicar viagens estratégicas ou possíveis excessos.
+
+* A análise temporal mostra picos em determinados meses, possivelmente relacionados a eventos sazonais ou obrigações administrativas.
+
+
+# CONCLUSÃO
+
+A análise evidenciou padrões importantes nos gastos com viagens a serviço em 2019.
+O conhecimento desses padrões pode subsidiar decisões para:
+
+* Reduzir custos com passagens.
+
+* Planejar melhor a distribuição de viagens ao longo do ano.
+
+* Estabelecer metas de eficiência orçamentária no setor público.
+
+Como próximos passos, recomenda-se integrar esses dados a séries históricas e realizar comparações entre anos para avaliar a evolução das despesas.
+
