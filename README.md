@@ -18,6 +18,7 @@ A proposta é explorar os gastos, identificar padrões e responder perguntas-cha
 * Conversão de tipos (datas, fatores)
 * Estatísticas descritivas
 * Visualizações (histogramas, boxplots, gráficos de barras e linha)
+* Geração de arquivo RMarkdown e Relatório no formato pdf.
 
 ---
 
@@ -104,3 +105,4 @@ Este projeto está licenciado sob a MIT License.
 📌GitHub: https://github.com/jcarlossc<br>
 📌Kaggle: https://www.kaggle.com/jcarlossc/  
 📌Twitter/X: https://x.com/jcarlossc1977
+
