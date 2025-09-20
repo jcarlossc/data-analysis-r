@@ -1,5 +1,5 @@
 
-# ANALISANDO DADOS ABERTOS DE VIAGENS A SERVIÇO.
+# ANALIZANDO DADOS ABERTOS DE VIAGENS A SERVIÇO.
 
 # A proposta deste tópico é colocar em prática algumas das 
 # funções do R trabalhando com a análise de dados abertos 
@@ -112,10 +112,7 @@ glimpse(viagens)
 # de dados, a presença de valores discrepantes e a distribuição 
 # dos valores dos dados.
 
-# Gerando histograma da coluna passagens.
-hist(viagens$Valor.passagens)
-
-# Outro exemplo de histograma - filtrando valores
+# Exemplo de histograma - filtrando valores
 # Para esse exemplo serão utilizadas as funções filter e select
 # ?dplyr::filter
 # ?dplyr::select
@@ -223,3 +220,40 @@ ggplot(p2, aes(x = reorder(destino, valor), y = valor))+
 p3 <- viagens %>%
   group_by(data.inicio.formatada) %>%
   summarise(qtd = n_distinct(Identificador.do.processo.de.viagem))
+
+head(p3)
+
+#Criando o gráfico
+ggplot(p3, aes(x = data.inicio.formatada, y = qtd, group = 1))+
+  geom_line()+
+  geom_point()
+
+# ------------------------------------------------------------------
+
+# GERANDO ARQUIVO R MARKDOWN.
+
+# Na linguagem R é possível usar o Markdown para formatar os seus relatórios.
+
+# Instalação do Rmarkdown.
+# O pacote rmarkdown ajuda você a criar documentos de análise 
+# dinâmica que combinam código, resultados renderizados 
+# (como figuras) e texto.
+# install.packages("rmarkdown")
+
+# O pacote tinytex instala a distribuição LaTeX TinyTeX, que é 
+# essencial e leve, para compilar documentos R Markdown em PDF, 
+# instalando automaticamente pacotes LaTeX faltantes, garantindo 
+# que os usuários do RStudio possam gerar relatórios PDF com facilidade. 
+# install.packages('tinytex')
+
+# A função tinytex() invoca a biblioteca. 
+library(tinytex)
+
+# Esta linha poderá levar alguns minutos para terminar a execução.
+# Acompanhe o progresso na aba console e aguarde a instalação ser finalizada.
+# tinytex::install_tinytex()
+
+# Criar um arquivo R Markdown: File > New File RMarkdown
+# Criar script
+# Gerar Relatório: Knit > Knit to PDF
+
